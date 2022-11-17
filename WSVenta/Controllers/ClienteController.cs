@@ -20,11 +20,11 @@ namespace WSVenta.Controllers
                 var lst = db.Clientes.OrderByDescending(x => x.Id).ToList();
                 oRespuesta.Exito = 1;
                 oRespuesta.Data = lst;
-            }
-            catch (Exception ex)
+            }         catch (Exception ex)
             {
                 oRespuesta.Mensaje = ex.Message;
             }
+   
             return Ok(oRespuesta);
         }
 
