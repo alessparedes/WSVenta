@@ -8,6 +8,6 @@ Practica backend de API para sistema de ventas, desarrollado en .NET CORE 6 C# V
 El frontend será repositorio https://github.com/alessparedes/AngularVenta
 
 
-#Important steps
-##Docker images
-##Docker Container
+# Important steps
+## Docker images
+## Docker Container
