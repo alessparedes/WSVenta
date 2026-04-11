@@ -39,8 +39,9 @@ namespace WSVenta.Models
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(50)
+                    .IsUnicode()
                     .HasColumnName("nombre")
-                    .IsFixedLength();
+                    .HasColumnType("nvarchar(50)");
             });
 
             modelBuilder.Entity<Concepto>(entity =>
@@ -84,8 +85,9 @@ namespace WSVenta.Models
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(150)
+                    .IsUnicode()
                     .HasColumnName("nombre")
-                    .IsFixedLength();
+                    .HasColumnType("nvarchar(150)");
 
                 entity.Property(e => e.PrecioUnitario)
                     .HasColumnType("decimal(16, 2)")

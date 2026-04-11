@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WSVenta.Models;
 using WSVenta.Models.Response;
 using WSVenta.Models.Request;
@@ -17,7 +16,7 @@ namespace WSVenta.Controllers
             try
             {
                 using VentaRealContext db = new VentaRealContext();
-                var lst = db.Clientes.OrderByDescending(x => x.Id).ToList();
+                var lst = db.Clientes.OrderBy(x => x.Id).ToList();
                 oRespuesta.Exito = 1;
                 oRespuesta.Data = lst;
             }         
