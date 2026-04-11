@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace WSVenta.Models
 {
-    public partial class Ventum
+    public partial class Venta
     {
-        public Ventum()
+        public Venta()
         {
             Conceptos = new HashSet<Concepto>();
         }

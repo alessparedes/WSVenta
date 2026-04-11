@@ -13,6 +13,6 @@ namespace WSVenta.Models
         public long IdProducto { get; set; }
 
         public virtual Producto IdProductoNavigation { get; set; } = null!;
-        public virtual Ventum IdVentaNavigation { get; set; } = null!;
+        public virtual Venta IdVentaNavigation { get; set; } = null!;
     }
 }

@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: SQLServer_VentaReal
+    restart: always
+    environment:
+      - ACCEPT_EULA=1
+      - MSSQL_SA_PASSWORD=Pruebas1.
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - ventalreal_data:/var/opt/mssql
+
+volumes:
+  ventalreal_data:

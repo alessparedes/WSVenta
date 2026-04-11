@@ -1,13 +1,24 @@
-# WSVenta
-## EN
-Practice API backend for sales system, developed in .NET CORE 6 C# Visual Studio 2022, using Entity Framework and SQL Server 2022 with docker. 
-Frontend will be repository https://github.com/alessparedes/AngularVenta
+# WSVenta API (.NET 8)
 
-## ES
-Practica backend de API para sistema de ventas, desarrollado en .NET CORE 6 C# Visual Studio 2022, utilizando Entity Framework y SQL Server 2022 con docker.
-El frontend será repositorio https://github.com/alessparedes/AngularVenta
+Backend para sistema de ventas utilizando Entity Framework Core y SQL Server en Docker.
 
+## 🚀 Requisitos previos
+* Docker 
+* .NET 8 SDK
 
-# Important steps
-## Docker images
-## Docker Container
+## 🛠️ Configuración del entorno
+
+1. **Levantar la base de datos:**
+   ```bash
+   docker compose up -d
+   ```
+
+2. **Actualizar la base de datos:**
+   ```bash
+   dotnet ef database update
+   ```
+
+3. **Ejecutar la API:**
+   ```bash
+   dotnet run
+   ```
