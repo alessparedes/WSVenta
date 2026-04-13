@@ -36,13 +36,14 @@ namespace WSVenta.Controllers
             {
                 using VentaRealContext db = new VentaRealContext();
                 Cliente oCliente = new Cliente();
-                oCliente.Nombre = oModel.Name;
+                oCliente.Nombre = oModel.nombre;
                 db.Add(oCliente);
                 db.SaveChanges();
                 oRespuesta.Exito = 1;
             }
             catch (Exception ex)
             {
+                oRespuesta.Exito = 0;
                 oRespuesta.Mensaje = ex.Message;
             }
             return Ok(oRespuesta);
@@ -56,7 +57,7 @@ namespace WSVenta.Controllers
             {
                 using VentaRealContext db = new VentaRealContext();
                 Cliente oCliente = db.Clientes.Find(oModel.Id);
-                oCliente.Nombre = oModel.Name.Trim();
+                oCliente.Nombre = oModel.nombre.Trim();
                 db.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.SaveChanges();
                 oRespuesta.Exito = 1;
