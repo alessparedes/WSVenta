@@ -1,3 +1,11 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using WSVenta.Models;
+using WSVenta.Models.Common;
+using WSVenta.Services;
+
 var MyAllowSpecificOrigins  = "_myAllowSpecificOrigins ";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +23,38 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddControllers();
+var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettingsSection);
+var appSettings = appSettingsSection.Get<AppSettings>();
+if (appSettings != null)
+{
+    var llave = Encoding.ASCII.GetBytes(appSettings.Secreto);
+    builder.Services.AddAuthentication(d =>
+        {
+            d.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            d.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(d =>
+            {
+                d.RequireHttpsMetadata = false;
+                d.SaveToken = true;
+                d.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(llave),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            }
+        );
+}
+
+var connectionString = builder.Configuration.GetConnectionString("VentaRealConnection");
+builder.Services.AddDbContext<VentaRealContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+builder.Services.AddScoped<IUserService, UserService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,6 +73,7 @@ app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

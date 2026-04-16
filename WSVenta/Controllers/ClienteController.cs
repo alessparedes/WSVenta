@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WSVenta.Models;
 using WSVenta.Models.Response;
 using WSVenta.Models.Request;
@@ -7,6 +8,7 @@ namespace WSVenta.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClienteController : ControllerBase
     {
         [HttpGet]
@@ -56,7 +58,7 @@ namespace WSVenta.Controllers
             try
             {
                 using VentaRealContext db = new VentaRealContext();
-                Cliente oCliente = db.Clientes.Find(oModel.Id);
+                Cliente? oCliente = db.Clientes.Find(oModel.Id);
                 oCliente.Nombre = oModel.nombre.Trim();
                 db.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.SaveChanges();
