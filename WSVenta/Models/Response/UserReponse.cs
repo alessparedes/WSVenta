@@ -1,4 +1,4 @@
-namespace WSVenta.Models.Request;
+namespace WSVenta.Models.Response;
 
 public class UserReponse
 {
