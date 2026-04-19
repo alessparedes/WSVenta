@@ -20,6 +20,7 @@ namespace WSVenta.Models
         public virtual DbSet<Concepto> Conceptos { get; set; } = null!;
         public virtual DbSet<Producto> Productos { get; set; } = null!;
         public virtual DbSet<Venta> Venta { get; set; } = null!;
+        public virtual DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -93,7 +94,36 @@ namespace WSVenta.Models
                     .HasColumnType("decimal(16, 2)")
                     .HasColumnName("precioUnitario");
             });
-
+            
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.ToTable("usuario");
+                
+                entity.Property(e => e.Id).HasColumnName("id");
+                
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("email")
+                    .HasColumnType("nvarchar(100)");
+                
+                entity.Property(e => e.Password)
+                    .HasMaxLength(256)
+                    .IsUnicode(false)
+                    .HasColumnName("password")
+                    .HasColumnType("nvarchar(256)");
+                
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("nombre")
+                    .HasColumnType("nvarchar(50)");
+                
+                entity.Property(e=> e.Estado)
+                    .HasColumnType("bit")
+                    .HasColumnName("estado");
+            });
+            
             modelBuilder.Entity<Venta>(entity =>
             {
                 entity.ToTable("venta");
