@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace WSVenta.Models
 {
@@ -24,10 +21,10 @@ namespace WSVenta.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=localhost,1433;Database=VentaReal;User Id=SA;Password=Pruebas1.;TrustServerCertificate=True;Encrypt=False");
-            }
+            // if (!optionsBuilder.IsConfigured)
+            // {
+            //     optionsBuilder.UseSqlServer("Server=localhost,1433;Database=VentaReal;User Id=SA;Password=Pruebas1.;TrustServerCertificate=True;Encrypt=False");
+            // }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

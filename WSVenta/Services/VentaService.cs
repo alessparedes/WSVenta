@@ -5,10 +5,16 @@ namespace WSVenta.Services;
 
 public class VentaService : IVentaService
 {
+    private readonly VentaRealContext _db;
+    
+    public VentaService(VentaRealContext db)
+    {
+        _db = db;
+    }
+    
     public void Add(VentaRequest model)
     {
-        using var db = new VentaRealContext();
-        var transaction = db.Database.BeginTransaction();
+        var transaction = _db.Database.BeginTransaction();
         try
         {
             var venta = new Venta
@@ -17,8 +23,8 @@ public class VentaService : IVentaService
                 Fecha = DateTime.Now,
                 IdCliente = model.IdCliente
             };
-            db.Venta.Add(venta);
-            db.SaveChanges();
+            _db.Venta.Add(venta);
+            _db.SaveChanges();
 
             foreach (var item in model.Conceptos)
             {
@@ -30,8 +36,8 @@ public class VentaService : IVentaService
                     Importe = item.Importe,
                     IdVenta = venta.Id
                 };
-                db.Conceptos.Add(concepto);
-                db.SaveChanges();
+                _db.Conceptos.Add(concepto);
+                _db.SaveChanges();
             }
                     
             transaction.Commit();

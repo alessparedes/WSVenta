@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WSVenta.Models;
 using WSVenta.Models.Request;
 using WSVenta.Models.Response;
 using WSVenta.Services;
-using Concepto = WSVenta.Models.Concepto;
 
 namespace WSVenta.Controllers
 {    
@@ -18,7 +15,7 @@ namespace WSVenta.Controllers
         
         public VentaController(IVentaService venta)
         {
-            this._venta = venta;
+            _venta = venta;
         }
         
         [HttpPost]

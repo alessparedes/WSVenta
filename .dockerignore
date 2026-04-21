@@ -1,0 +1,37 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+**/publish/
+**/artifacts/
+
+# IDE and editor files
+.vs/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.sln.docstates
+*.DotSettings.user
+*.sln.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git metadata
+.git/
+.gitignore
+.gitattributes
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+project.assets.json
+project.nuget.cache

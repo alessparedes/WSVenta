@@ -1,7 +1,7 @@
 services:
   db:
     image: mcr.microsoft.com/azure-sql-edge
-    container_name: SQLServer_VentaReal
+    container_name: WSVenta_SQLServer
     restart: always
     environment:
       - ACCEPT_EULA=1
@@ -11,6 +11,28 @@ services:
       - "1433:1433"
     volumes:
       - ventalreal_data:/var/opt/mssql
+    networks:
+      - venta_network
 
+  wsventa-api:
+    container_name: WSVenta_api
+    build:
+      context: .
+      dockerfile: WSVenta/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # IMPORTANTE: Aquí usamos el nombre del servicio 'db' como Host
+      - ConnectionStrings__VentaRealConnection=Server=db;Database=VentaReal;User Id=sa;Password=Pruebas1.;TrustServerCertificate=True;Encrypt=False
+    depends_on:
+      - db
+    networks:
+      - venta_network
+    
+networks:
+  venta_network:
+    driver: bridge
+    
 volumes:
   ventalreal_data:
