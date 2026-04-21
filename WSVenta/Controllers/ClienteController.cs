@@ -11,14 +11,24 @@ namespace WSVenta.Controllers
     [Authorize]
     public class ClienteController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+        private readonly VentaRealContext _context;
+
+        public ClienteController(IConfiguration configuration, VentaRealContext context)
+        {
+            _configuration = configuration;
+            _context = context;
+        }
+        
         [HttpGet]
         public IActionResult Get()
         {
             Respuesta oRespuesta = new Respuesta();
+            var connectionString =_configuration.GetConnectionString("VentaRealConnection");
+            Console.WriteLine($"DEBUG ConnectionString: {connectionString}");
             try
             {
-                using VentaRealContext db = new VentaRealContext();
-                var lst = db.Clientes.OrderBy(x => x.Id).ToList();
+                var lst = _context.Clientes.OrderBy(x => x.Id).ToList();
                 oRespuesta.Exito = 1;
                 oRespuesta.Data = lst;
             }         
@@ -34,13 +44,14 @@ namespace WSVenta.Controllers
         public IActionResult Add(ClienteRequest oModel)
         {
             Respuesta oRespuesta = new Respuesta();
+            var connectionString =_configuration.GetConnectionString("VentaRealConnection");
+            Console.WriteLine($"DEBUG ConnectionString: {connectionString}");
             try
             {
-                using VentaRealContext db = new VentaRealContext();
                 Cliente oCliente = new Cliente();
                 oCliente.Nombre = oModel.nombre;
-                db.Add(oCliente);
-                db.SaveChanges();
+                _context.Add(oCliente);
+                _context.SaveChanges();
                 oRespuesta.Exito = 1;
             }
             catch (Exception ex)
@@ -57,11 +68,10 @@ namespace WSVenta.Controllers
             Respuesta oRespuesta = new Respuesta();
             try
             {
-                using VentaRealContext db = new VentaRealContext();
-                Cliente? oCliente = db.Clientes.Find(oModel.Id);
+                Cliente? oCliente = _context.Clientes.Find(oModel.Id);
                 oCliente.Nombre = oModel.nombre.Trim();
-                db.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
                 oRespuesta.Exito = 1;
             }
             catch (Exception ex)
@@ -77,10 +87,9 @@ namespace WSVenta.Controllers
             Respuesta oRespuesta = new Respuesta();
             try
             {
-                using VentaRealContext db = new VentaRealContext();
-                Cliente oCliente = db.Clientes.Find(Id);
-                db.Remove(oCliente);
-                db.SaveChanges();
+                Cliente oCliente = _context.Clientes.Find(Id);
+                _context.Remove(oCliente);
+                _context.SaveChanges();
                 oRespuesta.Exito = 1;
             }
             catch (Exception ex)
