@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using WSVenta.Models;
 using WSVenta.Models.Common;
 using WSVenta.Services;
+using WSVenta.Tools;
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins ";
 
@@ -22,7 +23,12 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new IntToStringConverter());
+        options.JsonSerializerOptions.Converters.Add(new DecimalToStringConverter());   
+    });
 var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettingsSection);
 var appSettings = appSettingsSection.Get<AppSettings>();
