@@ -23,80 +23,97 @@ namespace WSVenta.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Respuesta oRespuesta = new Respuesta();
+            var respuesta = new Respuesta();
             var connectionString =_configuration.GetConnectionString("VentaRealConnection");
             Console.WriteLine($"DEBUG ConnectionString: {connectionString}");
             try
             {
                 var lst = _context.Clientes.OrderBy(x => x.Id).ToList();
-                oRespuesta.Exito = 1;
-                oRespuesta.Data = lst;
+                respuesta.Exito = 1;
+                respuesta.Data = lst;
             }         
             catch (Exception ex)
             {
-                oRespuesta.Mensaje = ex.Message;
+                respuesta.Mensaje = ex.Message;
             }
    
-            return Ok(oRespuesta);
+            return Ok(respuesta);
         }
 
         [HttpPost]
-        public IActionResult Add(ClienteRequest oModel)
+        public IActionResult Add(ClienteRequest model)
         {
-            Respuesta oRespuesta = new Respuesta();
+            var respuesta = new Respuesta();
             var connectionString =_configuration.GetConnectionString("VentaRealConnection");
             Console.WriteLine($"DEBUG ConnectionString: {connectionString}");
             try
             {
-                Cliente oCliente = new Cliente();
-                oCliente.Nombre = oModel.nombre;
-                _context.Add(oCliente);
+                var cliente = new Cliente
+                {
+                    Nombre = model.nombre
+                };
+                _context.Add(cliente);
                 _context.SaveChanges();
-                oRespuesta.Exito = 1;
+                respuesta.Exito = 1;
             }
             catch (Exception ex)
             {
-                oRespuesta.Exito = 0;
-                oRespuesta.Mensaje = ex.Message;
+                respuesta.Exito = 0;
+                respuesta.Mensaje = ex.Message;
             }
-            return Ok(oRespuesta);
+            return Ok(respuesta);
         }
 
         [HttpPut]
-        public IActionResult Edit(ClienteRequest oModel)
+        public IActionResult Edit(ClienteRequest model)
         {
-            Respuesta oRespuesta = new Respuesta();
+            var respuesta = new Respuesta();
             try
             {
-                Cliente? oCliente = _context.Clientes.Find(oModel.Id);
-                oCliente.Nombre = oModel.nombre.Trim();
-                _context.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _context.SaveChanges();
-                oRespuesta.Exito = 1;
+                var cliente = _context.Clientes.Find(model.Id);
+                if (cliente is not null)
+                {
+                    cliente.Nombre = model.nombre?.Trim();
+                    _context.SaveChanges();
+                    respuesta.Exito = 1;
+                }
+                else 
+                {
+                    respuesta.Exito = 0;
+                    respuesta.Mensaje = "Cliente no encontrado";
+                }
             }
             catch (Exception ex)
             {
-                oRespuesta.Mensaje = ex.Message;
+                respuesta.Mensaje = ex.Message;
             }
-            return Ok(oRespuesta);
+            return Ok(respuesta);
         }
 
-        [HttpDelete("{Id}")]
-        public IActionResult Delete (int Id)
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete (int id)
         {
-            Respuesta oRespuesta = new Respuesta();
+            var respuesta = new Respuesta();
             try
             {
-                Cliente oCliente = _context.Clientes.Find(Id);
-                _context.Remove(oCliente);
-                _context.SaveChanges();
-                oRespuesta.Exito = 1;
+                var cliente = _context.Clientes.Find(id);
+                if (cliente is not null)
+                {
+                    _context.Clientes.Remove(cliente);
+                    _context.SaveChanges();
+                    respuesta.Exito = 1;
+                }
+                else 
+                {
+                    respuesta.Exito = 0;
+                    respuesta.Mensaje = "Cliente no encontrado";
+                }
             }
             catch (Exception ex)
             {
-                oRespuesta.Mensaje = ex.Message;
+                respuesta.Mensaje = ex.Message;
             }
-            return Ok(oRespuesta);
+            return Ok(respuesta);
         }
     }
 }
